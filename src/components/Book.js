@@ -15,15 +15,11 @@ const Book = (props) => {
   // this function was created to reset the state so it can re-render again if the same shelf is used more than once
   const reset = () => {
     setSelected(props.book.shelf);
-    setBook({ current: null, shelf: selected });
+    setBook({ current: null, shelf: "none" });
   };
   const handleChange = (e) => {
     const value = e.target.value;
-    setSelected(
-      value,
-
-      setBook({ current: props.book, shelf: value })
-    );
+    setSelected(value, setBook({ current: props.book, shelf: value }));
     setTimeout(() => {
       reset();
     }, false);
