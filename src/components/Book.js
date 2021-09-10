@@ -4,23 +4,26 @@ import { get } from "../BooksAPI";
 
 const Book = (props) => {
   const { setBook } = useContext(bookContext);
-  const [selected, setSelected] = useState(null);
+  const [selected, setSelected] = useState(props.book.shelf);
 
   useEffect(() => {
     let mounted = true;
-
-    get(props.book.id).then((res) => mounted && setSelected(res.shelf));
-
+    !props.book.shelf &&
+      get(props.book.id).then((res) => mounted && setSelected(res.shelf));
     return () => (mounted = false);
   }, [props.book]);
   // this function was created to reset the state so it can re-render again if the same shelf is used more than once
   const reset = () => {
     setSelected(props.book.shelf);
-    setBook({ current: null, shelf: "none" });
+    setBook({ current: null, shelf: selected });
   };
   const handleChange = (e) => {
-    setSelected(e.target.value);
-    setBook({ current: props.book, shelf: e.target.value });
+    const value = e.target.value;
+    setSelected(
+      value,
+
+      setBook({ current: props.book, shelf: value })
+    );
     setTimeout(() => {
       reset();
     }, false);
@@ -54,7 +57,11 @@ const Book = (props) => {
           </div>
         )}
         <div className="book-shelf-changer">
-          <select value={selected ? selected : "none"} onChange={handleChange}>
+          <select
+            className="shelf-select"
+            onChange={handleChange}
+            value={selected ? selected : "none"}
+          >
             <option value="move" disabled>
               Move to...
             </option>
