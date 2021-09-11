@@ -2,8 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Shelf from "../components/Shelf";
 
-const Home = () => {
-  const shelfs = [
+const Home = ({ update, setBook, books, setShelf }) => {
+  const shelves = [
     { name: "currentlyReading", title: "Currently Reading" },
     { name: "wantToRead", title: "Want To Read" },
     { name: "read", title: "Read" },
@@ -13,9 +13,18 @@ const Home = () => {
       <div className="list-books-title">
         <h1>MyReads</h1>
       </div>
-      {shelfs &&
-        shelfs.map((shelf, i) => {
-          return <Shelf key={i} shelf={shelf} />;
+      {shelves &&
+        shelves.map((shelf, i) => {
+          return (
+            <Shelf
+              key={i}
+              shelf={shelf}
+              update={update}
+              setBook={setBook}
+              books={books}
+              setShelf={setShelf}
+            />
+          );
         })}
       ;
       <div className="open-search">

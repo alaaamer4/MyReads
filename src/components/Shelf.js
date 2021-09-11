@@ -1,9 +1,6 @@
-import React, { useContext } from "react";
 import Book from "./Book";
-import { booksContext } from "../App";
 
-const Shelf = ({ shelf }) => {
-  const books = useContext(booksContext);
+const Shelf = ({ shelf, update, setBook, books, setShelf }) => {
   const shelfBooks = books.filter((book) => book.shelf === shelf.name);
   return (
     <div className="list-books-content">
@@ -19,9 +16,14 @@ const Shelf = ({ shelf }) => {
           </div>
           <div className="bookshelf-books">
             <ol className="books-grid">
-              {shelfBooks.map((book, i) => (
-                <li key={i}>
-                  <Book book={book} />
+              {shelfBooks.map((book) => (
+                <li key={book.id}>
+                  <Book
+                    currentBook={book}
+                    update={update}
+                    setBook={setBook}
+                    setShelf={setShelf}
+                  />
                 </li>
               ))}
             </ol>

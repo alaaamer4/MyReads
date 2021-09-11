@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
 import { search } from "../BooksAPI";
 import Book from "../components/Book";
-const Search = () => {
+
+const Search = ({ update, setBook, shelfBooks, setShelf }) => {
   const [term, setTerm] = useState("");
   const [books, setBooks] = useState(null);
   const [error, setError] = useState(null);
@@ -46,9 +46,15 @@ const Search = () => {
           Array.isArray(books) &&
           !error &&
           term !== "" ? (
-            books.map((book, i) => (
-              <li key={i}>
-                <Book book={book} />
+            books.map((book) => (
+              <li key={book.id}>
+                <Book
+                  currentBook={book}
+                  shelfBooks={shelfBooks}
+                  update={update}
+                  setBook={setBook}
+                  setShelf={setShelf}
+                />
               </li>
             ))
           ) : (
@@ -60,4 +66,7 @@ const Search = () => {
   );
 };
 
+// shelfBooks.map((shelfBook) =>
+//   books.filter((book) => book.id === shelfBook.id)
+// );
 export default Search;

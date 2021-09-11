@@ -5,37 +5,56 @@ import Home from "./routes/Home";
 import Search from "./routes/Search";
 import "./App.css";
 
-export const booksContext = React.createContext();
-export const shelfContext = React.createContext();
-export const bookContext = React.createContext();
 const BooksApp = () => {
   const [books, setBooks] = useState(null);
-  const [book, setBook] = useState({ current: null, shelf: null });
+  const [book, setBook] = useState(null);
+  const [shelf, setShelf] = useState(null);
+  const [flip, setFlip] = useState(true);
 
-  const { current, shelf } = book;
+  const updateBooks = () => {
+    setFlip(!flip);
+  };
+  const changeBook = (book) => {
+    setBook(book);
+  };
+  const changeBookShelf = (shelf) => {
+    setShelf(shelf);
+  };
+
   useEffect(() => {
     let mounted = true;
     mounted &&
       getAll()
-        .then((res) => mounted && setBooks(res))
+        .then((res) => {
+          mounted && setBooks(res);
+        })
         .catch((err) => console.log(err));
-    mounted && current && update(current, shelf);
-
+    mounted && book && update(book, shelf);
     return () => (mounted = false);
-  }, [setBooks, current, shelf]);
+  }, [book, shelf]);
   return (
-    <booksContext.Provider value={books}>
-      <bookContext.Provider value={{ book, setBook }}>
-        <div className="app">
-          <BrowserRouter>
-            <Route exact path="/">
-              {books && <Home />}
-            </Route>
-            <Route path="/search" component={Search} />
-          </BrowserRouter>
-        </div>
-      </bookContext.Provider>
-    </booksContext.Provider>
+    <div className="app">
+      <BrowserRouter>
+        <Route exact path="/">
+          {books && (
+            <Home
+              update={updateBooks}
+              setShelf={changeBookShelf}
+              setBook={changeBook}
+              books={books}
+            />
+          )}
+        </Route>
+        <Route path="/search">
+          <Search
+            update={updateBooks}
+            setShelf={changeBookShelf}
+            setBook={changeBook}
+            shelfBooks={books}
+          />
+        </Route>
+      </BrowserRouter>
+    </div>
   );
 };
 
