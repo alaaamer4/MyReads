@@ -1,18 +1,16 @@
-import React, { useState } from "react";
-
-const ShelfChanger = ({ update, setBook, currentBook, setShelf }) => {
+import React, { useState, useContext } from "react";
+import { storeContext } from "../App";
+const ShelfChanger = ({ currentBook }) => {
+  const { setBook, setShelf } = useContext(storeContext);
   const [selectedShelf, setSelectedShelf] = useState(currentBook.shelf);
   const handleChange = (e) => {
     const value = e.target.value;
     setBook(currentBook);
-
     setShelf(value);
-
     // reset function
     setTimeout(() => {
       setBook(null);
       setShelf(null);
-      update();
     }, false);
     setSelectedShelf(value);
   };

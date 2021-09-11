@@ -5,21 +5,11 @@ import Home from "./routes/Home";
 import Search from "./routes/Search";
 import "./App.css";
 
+export const storeContext = React.createContext();
 const BooksApp = () => {
   const [books, setBooks] = useState(null);
   const [book, setBook] = useState(null);
   const [shelf, setShelf] = useState(null);
-  const [flip, setFlip] = useState(true);
-
-  const updateBooks = () => {
-    setFlip(!flip);
-  };
-  const changeBook = (book) => {
-    setBook(book);
-  };
-  const changeBookShelf = (shelf) => {
-    setShelf(shelf);
-  };
 
   useEffect(() => {
     let mounted = true;
@@ -34,26 +24,18 @@ const BooksApp = () => {
   }, [book, shelf]);
   return (
     <div className="app">
-      <BrowserRouter>
-        <Route exact path="/">
-          {books && (
-            <Home
-              update={updateBooks}
-              setShelf={changeBookShelf}
-              setBook={changeBook}
-              books={books}
-            />
-          )}
-        </Route>
-        <Route path="/search">
-          <Search
-            update={updateBooks}
-            setShelf={changeBookShelf}
-            setBook={changeBook}
-            shelfBooks={books}
-          />
-        </Route>
-      </BrowserRouter>
+      <storeContext.Provider
+        value={{ shelfBooks: books, setBooks, book, setBook, shelf, setShelf }}
+      >
+        <BrowserRouter>
+          <Route exact path="/">
+            {books && <Home />}
+          </Route>
+          <Route path="/search">
+            <Search />
+          </Route>
+        </BrowserRouter>
+      </storeContext.Provider>
     </div>
   );
 };

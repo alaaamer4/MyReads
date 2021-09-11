@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Shelf from "../components/Shelf";
 
-const Home = ({ update, setBook, books, setShelf }) => {
+const Home = () => {
   const shelves = [
     { name: "currentlyReading", title: "Currently Reading" },
     { name: "wantToRead", title: "Want To Read" },
@@ -15,16 +15,7 @@ const Home = ({ update, setBook, books, setShelf }) => {
       </div>
       {shelves &&
         shelves.map((shelf, i) => {
-          return (
-            <Shelf
-              key={i}
-              shelf={shelf}
-              update={update}
-              setBook={setBook}
-              books={books}
-              setShelf={setShelf}
-            />
-          );
+          return <Shelf key={i} shelf={shelf} />;
         })}
       ;
       <div className="open-search">

@@ -1,19 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { storeContext } from "../App";
 import ShelfChanger from "./ShelfChanger";
 
-const Book = ({ currentBook, update, setBook, setShelf, shelfBooks }) => {
-  const [sharedBook, setSharedBook] = useState([]);
+const Book = ({ currentBook }) => {
+  const { shelfBooks } = useContext(storeContext);
+  const [sharedBook, setSharedBook] = useState();
   useEffect(() => {
     const getBook = (shelfBooks, currentBook) => {
-      setSharedBook(
-        shelfBooks.filter((shelfBook) => shelfBook.id === currentBook.id)
-      );
+      shelfBooks.filter((shelfBook) => {
+        shelfBook.id === currentBook.id && setSharedBook(shelfBook);
+        // shelfBook.id === currentBook.id && console.log(shelfBook);
+        return shelfBook.id === currentBook.id;
+      });
     };
     shelfBooks && getBook(shelfBooks, currentBook);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  return sharedBook && sharedBook.length === 0 ? (
+  return !sharedBook ? (
     <div className="book">
       <div className="book-top">
         {currentBook.imageLinks ? (
@@ -40,12 +44,7 @@ const Book = ({ currentBook, update, setBook, setShelf, shelfBooks }) => {
             no image provided for this book
           </div>
         )}
-        <ShelfChanger
-          update={update}
-          setBook={setBook}
-          currentBook={currentBook}
-          setShelf={setShelf}
-        />
+        <ShelfChanger currentBook={currentBook} />
       </div>
       <div className="book-title">{currentBook.title}</div>
       <div className="book-authors">{currentBook.authors}</div>
@@ -53,13 +52,13 @@ const Book = ({ currentBook, update, setBook, setShelf, shelfBooks }) => {
   ) : (
     <div className="book">
       <div className="book-top">
-        {sharedBook[0].imageLinks ? (
+        {sharedBook.imageLinks ? (
           <div
             className="book-cover"
             style={{
               width: 128,
               height: 193,
-              backgroundImage: `url(${sharedBook[0].imageLinks.thumbnail})`,
+              backgroundImage: `url(${sharedBook.imageLinks.thumbnail})`,
             }}
           >
             {" "}
@@ -77,15 +76,10 @@ const Book = ({ currentBook, update, setBook, setShelf, shelfBooks }) => {
             no image provided for this book
           </div>
         )}
-        <ShelfChanger
-          update={update}
-          setBook={setBook}
-          currentBook={sharedBook[0]}
-          setShelf={setShelf}
-        />
+        <ShelfChanger currentBook={sharedBook} />
       </div>
-      <div className="book-title">{sharedBook[0].title}</div>
-      <div className="book-authors">{sharedBook[0].authors}</div>
+      <div className="book-title">{sharedBook.title}</div>
+      <div className="book-authors">{sharedBook.authors}</div>
     </div>
   );
 };

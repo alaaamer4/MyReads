@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { search } from "../BooksAPI";
 import Book from "../components/Book";
 
-const Search = ({ update, setBook, shelfBooks, setShelf }) => {
+const Search = () => {
   const [term, setTerm] = useState("");
   const [books, setBooks] = useState(null);
   const [error, setError] = useState(null);
@@ -48,13 +48,7 @@ const Search = ({ update, setBook, shelfBooks, setShelf }) => {
           term !== "" ? (
             books.map((book) => (
               <li key={book.id}>
-                <Book
-                  currentBook={book}
-                  shelfBooks={shelfBooks}
-                  update={update}
-                  setBook={setBook}
-                  setShelf={setShelf}
-                />
+                <Book currentBook={book} />
               </li>
             ))
           ) : (
@@ -66,7 +60,4 @@ const Search = ({ update, setBook, shelfBooks, setShelf }) => {
   );
 };
 
-// shelfBooks.map((shelfBook) =>
-//   books.filter((book) => book.id === shelfBook.id)
-// );
 export default Search;
