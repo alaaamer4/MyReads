@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { search } from "../BooksAPI";
+import { storeContext } from "../App";
 import Book from "../components/Book";
 
 const Search = () => {
+  const { shelfBooks } = useContext(storeContext);
   const [term, setTerm] = useState("");
-  const [books, setBooks] = useState(null);
+  const [books, setBooks] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -14,12 +16,20 @@ const Search = () => {
       term &&
       search(term)
         .then((res) => {
-          mounted && setBooks(res);
+          // mounted && setBooks(res);
+          res.forEach((book) => {
+            shelfBooks.forEach((shelfBook) => {
+              if (book.id === shelfBook.id) {
+                book.shelf = shelfBook.shelf;
+              }
+            });
+          });
+          setBooks(res);
         })
         .catch((err) => setError(err));
 
     return () => (mounted = false);
-  }, [term]);
+  }, [term, shelfBooks]);
   const onChange = (e) => {
     setTerm(e.target.value);
   };

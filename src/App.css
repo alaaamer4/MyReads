@@ -13,6 +13,14 @@ body,
   background: white;
 }
 
+/* not found */
+.not-found {
+  width: 100vw;
+  height: 100vh;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-image: url("./icons/not-found.svg");
+}
 /* main page */
 
 .list-books-title {
@@ -117,6 +125,20 @@ body,
   background-position: center;
   background-repeat: no-repeat;
   background-size: 28px;
+  font-size: 0;
+  border: none;
+  outline: none;
+}
+.close-not-found {
+  display: block;
+  top: 20px;
+  left: 15px;
+  width: 100px;
+  height: 73px;
+  background-image: url("./icons/arrow-back.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 50px;
   font-size: 0;
   border: none;
   outline: none;
