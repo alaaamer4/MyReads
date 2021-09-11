@@ -7,19 +7,26 @@ const ShelfChanger = ({ currentBook }) => {
     const value = e.target.value;
     setBook(currentBook);
     setShelf(value);
+    setSelectedShelf(value);
     // reset function
     setTimeout(() => {
       setBook(null);
       setShelf(null);
+      setSelectedShelf(null);
     }, false);
-    setSelectedShelf(value);
   };
   return (
     <div className="book-shelf-changer">
       <select
         className="shelf-select"
         onChange={handleChange}
-        value={selectedShelf ? selectedShelf : "none"}
+        value={
+          selectedShelf
+            ? selectedShelf
+            : !selectedShelf && currentBook.shelf
+            ? currentBook.shelf
+            : "none"
+        }
       >
         <option value="move" disabled>
           Move to...
